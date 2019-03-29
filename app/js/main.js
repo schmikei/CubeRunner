@@ -2,6 +2,7 @@ import * as THREE from 'three';
 // import orbit from 'three-orbit-controls';
 // const OrbitControls = orbit(THREE);
 import TrackballControls from 'three-trackballcontrols';
+import GameScene from './GameScene';
 
 export default class App {
   constructor() {
@@ -26,7 +27,9 @@ export default class App {
     this.tracker.noZoom = false;
     this.tracker.noPan = false;
 
-    this.game = new GameScene();
+    this.game = new GameScene(10, 3);
+    this.game.matrixAutoUpdate = false;
+    this.scene.add (this.game); 
 
     window.addEventListener('resize', () => this.resizeHandler());
     this.resizeHandler();
