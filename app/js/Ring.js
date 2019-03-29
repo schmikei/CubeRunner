@@ -5,7 +5,7 @@ export default class Ring {
 
     const ringGeo = new TorusGeometry(radius, tubeRadius, 8, 8 );
     const ringMat = new MeshBasicMaterial( {color: 0xD1B58C} );
-    const ring = new Mesh( bodyGeo, bodyMat );
+    const ring = new Mesh( ringGeo, ringMat );
     this.add (ring);
 
     // default to "return this;"
