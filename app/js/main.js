@@ -32,6 +32,16 @@ export default class App {
     const dodecmesh = new THREE.Mesh(dodecgeom, dodecmatr);
     this.scene.add(dodecmesh);
 
+
+    //adding the lightsource
+    const lightOne = new THREE.DirectionalLight (0xFFFFFF, 1.0);
+    lightOne.position.set (10, 40, 100);
+    this.scene.add (lightOne); 
+
+    const lightTwo = new THREE.DirectionalLight (0xFFFFFF, 1.0);
+    lightTwo.position.set (-10, -40, -100);
+    this.scene.add (lightTwo); 
+
     window.addEventListener('resize', () => this.resizeHandler());
     this.resizeHandler();
     requestAnimationFrame(() => this.render());
