@@ -26,21 +26,7 @@ export default class App {
     this.tracker.noZoom = false;
     this.tracker.noPan = false;
 
-    // Dodecahedron radius = 30
-    const dodecgeom = new THREE.DodecahedronGeometry(30);
-    const dodecmatr = new THREE.MeshBasicMaterial({color: 0x14ae6e});
-    const dodecmesh = new THREE.Mesh(dodecgeom, dodecmatr);
-    this.scene.add(dodecmesh);
-
-
-    //adding the lightsource
-    const lightOne = new THREE.DirectionalLight (0xFFFFFF, 1.0);
-    lightOne.position.set (10, 40, 100);
-    this.scene.add (lightOne); 
-
-    const lightTwo = new THREE.DirectionalLight (0xFFFFFF, 1.0);
-    lightTwo.position.set (-10, -40, -100);
-    this.scene.add (lightTwo); 
+    this.game = new GameScene();
 
     window.addEventListener('resize', () => this.resizeHandler());
     this.resizeHandler();
