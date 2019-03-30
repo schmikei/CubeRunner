@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-// import orbit from 'three-orbit-controls';
+import orbit from 'three-orbit-controls';
 // const OrbitControls = orbit(THREE);
 import TrackballControls from 'three-trackballcontrols';
 
@@ -9,17 +9,21 @@ export default class App {
     // Enable antialias for smoother lines
     this.renderer = new THREE.WebGLRenderer({canvas: c, antialias: true});
     this.scene = new THREE.Scene();
+    this.scene.background = new THREE.Color( 0xfffffff);
+
     // Use perspective camera:
     //   Field of view: 75 degrees
     //   Screen aspect ration 4:3
     //   Near plane at z=0.5, far plane at z=500
     this.camera = new THREE.PerspectiveCamera(75, 4/3, 0.5, 500);
+   
+
+    // this.controls = new OrbitControls(this.camera);
+    // this.controls.update();
+
     // Place the camera at (0,0,100)
     this.camera.position.z = 100;
 
-    // const orbiter = new OrbitControls(this.camera);
-    // orbiter.enableZoom = false;
-    // orbiter.update();
     this.tracker = new TrackballControls(this.camera);
     this.tracker.rotateSpeed = 2.0;
     // Allow zoom and pan
@@ -28,7 +32,7 @@ export default class App {
 
     // Dodecahedron radius = 30
     const dodecgeom = new THREE.DodecahedronGeometry(30);
-    const dodecmatr = new THREE.MeshBasicMaterial({color: 0x14ae6e});
+    const dodecmatr = new THREE.MeshPhongMaterial({color: 0x14ae6e});
     const dodecmesh = new THREE.Mesh(dodecgeom, dodecmatr);
     this.scene.add(dodecmesh);
 
@@ -50,6 +54,8 @@ export default class App {
   render() {
     this.renderer.render(this.scene, this.camera);
     this.tracker.update();
+
+    // this.controls.update();
     // setup the render function to "autoloop"
     requestAnimationFrame(() => this.render());
   }
@@ -67,5 +73,30 @@ export default class App {
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(w, h);
     this.tracker.handleResize();
+  }
+
+  keyboardHandler(){
+    switch (code) {
+
+      //Left arrow
+      case 37:
+          this.camX = 0;
+          break;
+
+      //Right arrow
+      case 39:
+          this.camX = 0;
+          break;
+
+      //Up arrow
+      case 38:
+          this.camZ = 0;
+          break;
+
+      //Down arrow
+      case 40:
+          this.camZ = 0;
+          break;
+    }
   }
 }

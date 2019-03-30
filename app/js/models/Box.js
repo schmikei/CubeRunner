@@ -1,6 +1,6 @@
 import { BoxGeometry, MeshBasicMaterial, Mesh, Group} from 'three';
 
-export default class Box {
+export default class Box extends Group {
   constructor (scaler) {
 
     const bodyGeo = new BoxGeometry( (1 * scaler), (1 * scaler), (1 * scaler) );

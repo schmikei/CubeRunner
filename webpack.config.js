@@ -26,7 +26,7 @@ module.exports = {
     and merges them into our starter template HTML
     */
     new HtmlWebpackPlugin({
-      title: 'WebGL Three.js Starter', // Goes under <title> of the generated HTML
+      title: 'CubeRunner', // Goes under <title> of the generated HTML
       template: TEMPLATE_PATH,           // Template HTML to use
       inject: 'body'                     // Inject the <script> tags in <body>
     })

@@ -1,6 +1,6 @@
 import { TorusGeometry, MeshBasicMaterial, Mesh, Group} from 'three';
 
-export default class Ring {
+export default class Ring extends Group{
   constructor (radius, tubeRadius) {
 
     const ringGeo = new TorusGeometry(radius, tubeRadius, 8, 8 );
