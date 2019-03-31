@@ -64,4 +64,9 @@ export default class GameScene extends Group {
 
     // default to "return this;"
   }
+
+    updateScene() {
+      //we will regenerate the map for the next frame
+      
+  }
 } 
