@@ -11,6 +11,8 @@ export default class StarryBG extends Group{
             star.material.side = THREE.DoubleSide;
             this.stars.push( star );
         }
+
+        
     }
     getRandom() {
         var num = Math.floor(Math.random()*10) + 1;

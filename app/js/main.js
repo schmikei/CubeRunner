@@ -17,7 +17,7 @@ export default class App {
     this.goLeft = -3;
     this.goRight = 3;
 
-    this.gamespeed = -.5;
+    this.gamespeed = .5;
     this.renderdistance = 20000;
 
 
@@ -65,9 +65,11 @@ export default class App {
     lightTwo.position.set (-10, -40, -100);
     this.scene.add (lightTwo); 
 
+    this.scenecounter = 0;
+
 
     this.game = new GameScene(10, 3);
-    this.game.matrixAutoUpdate = false;
+    // this.game.matrixAutoUpdate = false;
     this.scene.add (this.game); 
 
     this.player = new Ship(2,4,6);
@@ -104,14 +106,14 @@ export default class App {
           this.goDown = -3;
           this.goLeft = -3;
           this.goRight = 3;
-          this.gamespeed = -.3;
+          this.gamespeed = -.5;
         }else{
           this.goUp = 0;
           this.goDown = 0;
           this.goLeft = 0;
           this.goRight = 0;
           this.isPaused = true;
-          this.gamespeed = '0';
+          this.gamespeed = 0;
         }
       }
     });
@@ -125,12 +127,12 @@ export default class App {
 
   render() {
     // console.log(this.camera.position);
-    if (this.camera.position.z < 0){
-      this.extendframe();
+    if (this.game.position.z > 125*this.scenecounter){
+      this.extendframe(this.game.position.z);
+      ++this.scenecounter;
     }
 
-    this.camera.translateZ(this.gamespeed);
-    this.player.translateZ(this.gamespeed);
+    this.game.translateZ(this.gamespeed);
 
     // this.camera.lookAt(this.player.position);
 
@@ -160,15 +162,17 @@ export default class App {
     this.tracker.handleResize();
   }
 
-  extendframe(){
+  extendframe(zpos){
+
     this.scene.remove(this.game);
+    
     //regenerate game board
     this.game = new GameScene(10, 3);
-    this.game.matrixAutoUpdate = false;
+    this.game.position.z = -zpos;
     this.scene.add (this.game); 
 
-    this.player.position.z = 100;
-    this.camera.position.z = 150
+    // this.player.position.z = 100;
+    // this.camera.position.z = 150;
   }
 
 }
