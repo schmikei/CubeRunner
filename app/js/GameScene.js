@@ -61,7 +61,6 @@ export default class GameScene extends Group {
         }
         this.add(this.ring);
     }
-
     return this;
   }
 

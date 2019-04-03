@@ -11,7 +11,7 @@ export default class App {
     const c = document.getElementById('mycanvas');
 
 
-    //values to b e translated in eventlistener
+    //values to be translated in eventlistener
     this.goUp = 3;
     this.goDown = -3;
     this.goLeft = -3;
@@ -65,12 +65,15 @@ export default class App {
     lightTwo.position.set (-10, -40, -100);
     this.scene.add (lightTwo); 
 
-    this.scenecounter = 0;
+    this.sceneZPos = 0;
 
 
     this.game = new GameScene(10, 3);
-    // this.game.matrixAutoUpdate = false;
-    this.scene.add (this.game); 
+    this.game2 = new GameScene(10,3);
+    this.game2.translateZ(-125);
+    //this.game.matrixAutoUpdate = false;
+    this.scene.add (this.game);
+    this.scene.add (this.game2);
 
     this.player = new Ship(2,4,6);
     this.player.position.z = 50
@@ -106,7 +109,7 @@ export default class App {
           this.goDown = -3;
           this.goLeft = -3;
           this.goRight = 3;
-          this.gamespeed = -.5;
+          this.gamespeed = .5;
         }else{
           this.goUp = 0;
           this.goDown = 0;
@@ -126,13 +129,13 @@ export default class App {
   }
 
   render() {
-    // console.log(this.camera.position);
-    if (this.game.position.z > 125*this.scenecounter){
+    if (this.game.position.z >= 125){
+      //this.sceneZPos = this.game.position.z;
       this.extendframe(this.game.position.z);
-      ++this.scenecounter;
     }
 
     this.game.translateZ(this.gamespeed);
+    this.game2.translateZ(this.gamespeed);
 
     // this.camera.lookAt(this.player.position);
 
@@ -163,14 +166,14 @@ export default class App {
   }
 
   extendframe(zpos){
-
     this.scene.remove(this.game);
-    
-    //regenerate game board
-    this.game = new GameScene(10, 3);
-    this.game.position.z = -zpos;
-    this.scene.add (this.game); 
-
+    this.scene.remove(this.game2);
+    this.game = this.game2;
+    this.game2 = new GameScene(10, 3);
+    this.game2.translateZ(-125);
+    this.scene.add (this.game);
+    this.scene.add (this.game2);
+    //this.game.translateZ(zpos);
     // this.player.position.z = 100;
     // this.camera.position.z = 150;
   }
