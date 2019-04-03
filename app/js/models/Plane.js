@@ -5,7 +5,7 @@ export default class Plane extends Group {
     super(); 
 
     var geometry = new PlaneGeometry( width, height);
-    var material = new MeshBasicMaterial( {color: 0xffff00, side: DoubleSide} );
+    var material = new MeshBasicMaterial( {color: 0xff0000, side: DoubleSide} );
     var plane = new Mesh( geometry, material );
     this.add( plane );
 

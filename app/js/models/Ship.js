@@ -1,12 +1,12 @@
 import { BoxGeometry, MeshPhongMaterial, Mesh, Group} from 'three';
 
 export default class Ship extends Group {
-  constructor (tempSize) {
+  constructor (shipHeight, shipWidth, shipDepth) {
     super();
 
     //body of ship is a box
-    const shipGeo = new BoxGeometry( tempSize, tempSize, tempSize );
-    const shipMat = new MeshPhongMaterial( {color: 0xD1B58C} );
+    const shipGeo = new BoxGeometry( shipWidth, shipHeight, shipDepth );
+    const shipMat = new MeshPhongMaterial( {color: 0x344152} );
     const ship = new Mesh( shipGeo, shipMat );
     this.add (ship);
 

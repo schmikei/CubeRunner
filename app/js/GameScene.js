@@ -62,7 +62,7 @@ export default class GameScene extends Group {
         this.add(this.ring);
     }
 
-    // default to "return this;"
+    return this;
   }
 
     updateScene() {

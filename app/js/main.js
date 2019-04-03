@@ -18,7 +18,7 @@ export default class App {
     this.goRight = 3;
 
     this.gamespeed = -.5;
-    this.renderdistance = 300;
+    this.renderdistance = 20000;
 
 
     // Enable antialias for smoother lines
@@ -45,13 +45,14 @@ export default class App {
     this.tracker.noZoom = false;
     this.tracker.noPan = false;
 
-    
 
-    // Dodecahedron radius = 30
-    const dodecgeom = new THREE.DodecahedronGeometry(30);
-    const dodecmatr = new THREE.MeshPhongMaterial({color: 0x14ae6e});
-    const dodecmesh = new THREE.Mesh(dodecgeom, dodecmatr);
-    // this.scene.add(dodecmesh);
+
+    //got from the documentation
+    var loader = new THREE.FontLoader();
+    loader.load( './app/font/helvetiker_regular.typeface.json');
+
+    // this.scene.add(geometry);
+    
 
 
     //adding the lightsource
@@ -69,7 +70,7 @@ export default class App {
     this.game.matrixAutoUpdate = false;
     this.scene.add (this.game); 
 
-    this.player = new Ship(15);
+    this.player = new Ship(2,4,6);
     this.player.position.z = 50
     this.scene.add(this.player)
 
@@ -103,7 +104,7 @@ export default class App {
           this.goDown = -3;
           this.goLeft = -3;
           this.goRight = 3;
-          this.gamespeed = -.1;
+          this.gamespeed = -.3;
         }else{
           this.goUp = 0;
           this.goDown = 0;
@@ -122,24 +123,16 @@ export default class App {
     
   }
 
-
-
   render() {
-    console.log(this.camera.position);
+    // console.log(this.camera.position);
     if (this.camera.position.z < 0){
-      this.scene.remove(this.game);
-      //regenerate game board
-      this.game = new GameScene(10, 3);
-      this.game.matrixAutoUpdate = false;
-      this.scene.add (this.game); 
-
-      this.player.position.z = 100;
-      this.camera.position.z = 150
+      this.extendframe();
     }
 
     this.camera.translateZ(this.gamespeed);
     this.player.translateZ(this.gamespeed);
 
+    // this.camera.lookAt(this.player.position);
 
     this.renderer.render(this.scene, this.camera);
     this.tracker.update();
@@ -151,11 +144,6 @@ export default class App {
     requestAnimationFrame(() => this.render());
   }
 
-  move(direction){
-    if (direction == 'up'){
-      console.log("HI");
-    }
-  }
 
   resizeHandler() {
     const canvas = document.getElementById("mycanvas");
@@ -170,6 +158,17 @@ export default class App {
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(w, h);
     this.tracker.handleResize();
+  }
+
+  extendframe(){
+    this.scene.remove(this.game);
+    //regenerate game board
+    this.game = new GameScene(10, 3);
+    this.game.matrixAutoUpdate = false;
+    this.scene.add (this.game); 
+
+    this.player.position.z = 100;
+    this.camera.position.z = 150
   }
 
 }
