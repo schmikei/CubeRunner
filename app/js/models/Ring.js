@@ -4,7 +4,7 @@ export default class Ring extends Group{
   constructor (radius, tubeRadius) {
     super();
 
-    const ringGeo = new TorusGeometry(radius, tubeRadius, 8, 8 );
+    const ringGeo = new TorusGeometry(radius, tubeRadius, 23, 23 );
     const ringMat = new MeshPhongMaterial( {color: 0xFFD700} );
     const ring = new Mesh( ringGeo, ringMat );
     this.add (ring);

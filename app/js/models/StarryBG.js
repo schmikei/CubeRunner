@@ -1,7 +1,10 @@
 import * as THREE from 'three';
+import { BoxGeometry, MeshBasicMaterial, Mesh, Group} from 'three';
+
 
 export default class StarryBG extends Group{
     constructor(intensity){
+        super();
         this.stars = []
         for (let i = 0; i < 200; i++) {
             let geometry = new THREE.PlaneGeometry( 0.5, 0.5 );
