@@ -10,21 +10,24 @@ import StarryBG from './models/StarryBG';
 export default class App {
   constructor() {
     const c = document.getElementById('mycanvas');
+    
+    var xConstraint = 45;
+    var yConstraint = 30;
 
-    //values to b e translated in eventlistener
-    this.goUp = 3;
-    this.goDown = -3;
-    this.goLeft = -3;
-    this.goRight = 3;
+    var movementSpeed = 2.5;
+    //values to be translated in eventlistener
+    this.goUp = movementSpeed;
+    this.goDown = -(movementSpeed);
+    this.goLeft = -(movementSpeed);
+    this.goRight = movementSpeed;
 
     this.gamespeed = .5;
 
     this.gamelist = [];
-    this.renderdistance = 125;
+    this.renderdistance = 220;
 
     this.score = 0;
     this.frameCount = 0;
-
 
     // Enable antialias for smoother lines
     this.renderer = new THREE.WebGLRenderer({ canvas: c, antialias: true });
@@ -87,8 +90,8 @@ export default class App {
     this.scenecounter = 0;
 
     this.player = new Ship(2, 4, 6);
-    this.player.position.z = 50
-    this.scene.add(this.player)
+    this.player.position.z = 50;
+    this.scene.add(this.player);
 
     //adding eventlistener for camera movement
     document.addEventListener('keydown', (e) => {//passing this handler function
@@ -97,29 +100,45 @@ export default class App {
       if (e.keyCode == '38') {
         // up arrow
         // this.camera.translateY(this.goUp);
-        this.player.translateY(this.goUp);
+        if(this.player.position.y < yConstraint){
+            this.player.translateY(this.goUp);
+        }
       }
       else if (e.keyCode == '40') {// down arrow
         // this.camera.translateY(this.goDown);
-        this.player.translateY(this.goDown);
+        if(this.player.position.y > -yConstraint){
+            this.player.translateY(this.goDown);
+        }
       }
       else if (e.keyCode == '37') {
         // left arrow
         //  this.camera.translateX(this.goLeft);
-        this.player.translateX(this.goLeft);
+        if(this.player.position.x > -xConstraint){
+            this.player.translateX(this.goLeft);
+        }
       }
       else if (e.keyCode == '39') {
         // right arrow
         //  this.camera.translateX(this.goRight);
-        this.player.translateX(this.goRight);
+            if(this.player.position.x < xConstraint){
+                this.player.translateX(this.goRight);
+            }
+      }
+        else if (e.keyCode == '65') {
+        // 'A' Key
+                this.player.rotateZ(this.goRight);
+      }
+        else if (e.keyCode == '68') {
+        // 'D' Key
+                this.player.rotateZ(this.goRight);
       }
       else if (e.keyCode == '27') { //press esc to pause
         if (this.isPaused) {
           this.isPaused = false;
-          this.goUp = 3;
-          this.goDown = -3;
-          this.goLeft = -3;
-          this.goRight = 3;
+          this.goUp = movementSpeed;
+          this.goDown = -(movementSpeed);
+          this.goLeft = -(movementSpeed);
+          this.goRight = (movementSpeed);
           this.gamespeed = .5;
         } else {
           this.goUp = 0;
@@ -140,16 +159,6 @@ export default class App {
 
 
   render() {
-   
-    if (this.game.position.z >= 125) {
-      //this.sceneZPos = this.game.position.z;
-      this.extendframe(this.game.position.z);
-    }
-
-
-    if (this.detectCollision()){
-      this.setGameOver();
-    }
 
     this.game.translateZ(this.gamespeed);
     this.game2.translateZ(this.gamespeed);
@@ -198,49 +207,7 @@ export default class App {
     this.game2.translateZ(-125);
     this.scene.add(this.game);
     this.scene.add(this.game2);
-    //this.game.translateZ(zpos);
-    // this.player.position.z = 100;
-    // this.camera.position.z = 150;
 
   }
-  detectCollision(obstacles) {
-
-    for (let i = 0; i < this.player.vertices; ++i){
-      var localVertex = playerModel.geometry.vertices[v].clone();
-        var globalVertex = localVertex.applyMatrix4(playerModel.matrix);
-        var directionVector = globalVertex.sub(playerModel.position);
-
-        var ray = new THREE.Raycaster(origin, directionVector.clone().normalize());
-        var intersections = ray.intersectObjects(obstacles);
-        if (intersections.length > 0 && 
-            intersections[0].distance < directionVector.length()) {
-            console.log("Fatal collision!");    // definitely a collision
-            return true;
-        }
-    }
-    return false;
-    }
-
-    setGameOver(){
-
-    }
-
-
-      //extedn the game board
-      // if (init){
-      //   for (let i = 0; i < 5; ++i){
-      //     this.gamelist.push( new GameScene(10, 3));
-      //     this.gamelist[this.scenecounter].position.z++;
-      //     this.gamelist[this.scenecounter].position.z = -zpos - i*125;
-      //     this.scene.add ( this.gamelist[this.scenecounter]); 
-      //     this.scenecounter = this.gamelist.length -1;
-      //   }
-      // }else{
-
-      //   console.log("POPPING");
-      //   this.gamelist.push( new GameScene(10, 3));
-      //   this.gamelist[this.scenecounter].position.z = -zpos;
-      //   this.scene.add ( this.gamelist[this.scenecounter]);
-      // }
 
 }
