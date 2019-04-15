@@ -126,11 +126,11 @@ export default class App {
       }
         else if (e.keyCode == '65') {
         // 'A' Key
-                this.player.rotateZ(this.goRight);
+                this.player.rotateZ((Math.PI / 6));
       }
         else if (e.keyCode == '68') {
         // 'D' Key
-                this.player.rotateZ(this.goRight);
+                this.player.rotateZ(-(Math.PI / 6));
       }
       else if (e.keyCode == '27') { //press esc to pause
         if (this.isPaused) {
@@ -159,6 +159,12 @@ export default class App {
 
 
   render() {
+
+    //////
+    if (this.game.position.z >= 125) {
+      //this.sceneZPos = this.game.position.z;
+      this.extendframe(this.game.position.z);
+    }
 
     this.game.translateZ(this.gamespeed);
     this.game2.translateZ(this.gamespeed);
