@@ -9,7 +9,7 @@ export default class Ship extends Group {
     const shipMat = new MeshPhongMaterial( {color: 0x344152} );
     const ship = new Mesh( shipGeo, shipMat );
     this.vertices = ship.geometry.vertices;
-    console.log(this.vertices);
+    // console.log(this.vertices);
     this.add (ship);
 
     return this;

@@ -1,4 +1,4 @@
-import { BoxGeometry, MeshBasicMaterial, Mesh, Group} from 'three';
+import {  Group} from 'three';
 import Box from './models/Box';
 import Ring from './models/Ring';
 import Plane from './models/Plane';
@@ -61,12 +61,25 @@ export default class GameScene extends Group {
         }
         this.add(this.ring);
     }
-
     return this;
   }
 
     updateScene() {
       //we will regenerate the map for the next frame
-      
-  }
+    }
+    
+    addExplosion(){
+        particleGeometry = new THREE.Geometry();
+        for (var i = 0; i < particleCount; i ++ ) {
+            var vertex = new THREE.Vector3();
+            particleGeometry.vertices.push( vertex );
+        }
+        var pMaterial = new THREE.ParticleBasicMaterial({
+          color: 0xfffafa,
+          size: 0.2
+        });
+        particles = new THREE.Points( particleGeometry, pMaterial );
+        scene.add( particles );
+        particles.visible=false;
+    }
 } 
