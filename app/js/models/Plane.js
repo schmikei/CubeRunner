@@ -9,7 +9,7 @@ export default class Plane extends Group {
     // texture.wrapS = THREE.RepeatWrapping;
     // texture.wrapT = THREE.RepeatWrapping;
     var geometry = new PlaneGeometry(width, height);
-    geometry.rotateZ(90);
+    // geometry.rotateZ(90);
     var material = new MeshPhongMaterial( {color: 0xff88ff, side: DoubleSide} );
     var plane = new Mesh( geometry, material );
     this.add( plane );
