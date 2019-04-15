@@ -3,31 +3,40 @@ import { BoxGeometry, MeshBasicMaterial, Mesh, Group} from 'three';
 
 
 export default class StarryBG extends Group{
-    constructor(intensity){
+    constructor(){
         super();
-        this.stars = []
-        for (let i = 0; i < 200; i++) {
-            let geometry = new THREE.PlaneGeometry( 0.5, 0.5 );
-            let material = new THREE.MeshBasicMaterial( { map: starTexture } );
-            let star = new THREE.Mesh( geometry, material );
-            star.position.set( getRandom(), getRandom(), getRandom() );
-            star.material.side = THREE.DoubleSide;
-            this.stars.push( star );
-        }
+        var texture = new THREE.TextureLoader().load( "./app/js/models/star.jpg" );
+        texture.wrapS = THREE.RepeatWrapping;
+        texture.wrapT = THREE.RepeatWrapping;
 
+        var backgroundMesh = new THREE.Mesh(
+            new THREE.PlaneGeometry(2, 2, 0),
+            new THREE.MeshBasicMaterial({
+                map: texture
+            }));
+        // backgroundMesh.material.depthTest = false;
+        backgroundMesh.material.depthWrite = false;
+
+        this.backgroundScene = new THREE.Scene();
+        console.log(this.backgroundScene)
+        this.backgroundCamera = new THREE.Camera();
+        this.backgroundScene.add(this.backgroundCamera );
+        this.backgroundScene.add(backgroundMesh);
+
+        // var starsMaterial = new THREE.PointsMaterial( { color: 0x888888 } );
+        // var starsGeometry = new THREE.Geometry();
+
+        // for ( var i = 0; i < 10000; i ++ ) {
+        //     var star = new THREE.Vector3();
+        //     star.x = THREE.Math.randFloatSpread( 2000 );
+        //     star.y = THREE.Math.randFloatSpread( 2000 );
+        //     star.z = THREE.Math.randFloatSpread( 2000 );
+        //     starsGeometry.vertices.push( star );
         
-    }
-    getRandom() {
-        var num = Math.floor(Math.random()*10) + 1;
-        num *= Math.floor(Math.random()*2) == 1 ? 1 : -1;
-        return num;
+        // }
+        // var starField = new THREE.Points( starsGeometry, starsMaterial );
+        // this.add(backgroundMesh);
+        return this;
     }
 
-    animateStars(){
-        for (let k = 0; k < this.stars.length; k++) {
-            let star = this.stars[k];
-            star.rotation.x += 0.01;
-            star.rotation.y += 0.01;
-        }
-    }
 }

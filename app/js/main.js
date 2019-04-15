@@ -24,6 +24,7 @@ export default class App {
     this.gamespeed = 1;
 
     this.gameOver = false;
+    this.isDead = false;
 
     this.gamelist = [];
     this.renderdistance = 220;
@@ -34,18 +35,20 @@ export default class App {
 
     // Enable antialias for smoother lines
     this.renderer = new THREE.WebGLRenderer({ canvas: c, antialias: true });
+  
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0xf0f0f0);
+    // this.scene.background = new THREE.Color(0xf0f0f0);
+    var texture = new THREE.TextureLoader().load( "./app/js/models/star.jpg" );
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    this.scene.background = texture;
+
 
     //   Use perspective camera:
     //   Field of view: 75 degrees
     //   Screen aspect ration 4:3
     //   Near plane at z=0.5, far plane at z=500
     this.camera = new THREE.PerspectiveCamera(75, 4 / 3, 0.5, this.renderdistance);
-
-
-    // this.controls = new OrbitControls(this.camera);
-    // this.controls.update();
 
     // Place the camera at (0,0,100)
     this.camera.position.z = 100;
@@ -59,7 +62,6 @@ export default class App {
 
 
 
-    // this.background = 
 
     // this.scene.add(geometry);
 
@@ -102,10 +104,8 @@ export default class App {
     document.addEventListener('keydown', (e) => {//passing this handler function
       e = e || window.event;
 
-      if (e.keyCode == '82'){
-        return new constructor();
-      }
-      else if (e.keyCode == '38') {
+
+       if (e.keyCode == '38') {
         // up arrow
         // this.camera.translateY(this.goUp);
         if(this.player.position.y < yConstraint){
@@ -134,11 +134,11 @@ export default class App {
       }
         else if (e.keyCode == '65') {
         // 'A' Key
-                this.player.rotateZ(this.goRight);
+          this.player.rotateZ((Math.PI / 6));
       }
         else if (e.keyCode == '68') {
         // 'D' Key
-                this.player.rotateZ(this.goRight);
+          this.player.rotateZ(-(Math.PI / 6));
       }
       else if (e.keyCode == '27') { //press esc to pause
         if (this.isPaused) {
@@ -167,7 +167,7 @@ export default class App {
 
 
   render() {
-    if (!this.gameOver) {
+    if (!this.gameOver && !this.isDead) {
       if (this.game.position.z >= 125) {
         //this.sceneZPos = this.game.position.z;
         this.extendframe(this.game.position.z);
@@ -175,17 +175,19 @@ export default class App {
 
 
       if (this.detectCollision(this.obstacles[0])) {
-        this.setGameOver(true);
+        this.isDead = true;
         document.getElementById('score').innerHTML = 'Score: ' + this.score + " GAME OVER!!"
       }
+
+      // this.game.randomTransforms(10);
 
 
       this.game.translateZ(this.gamespeed);
       this.game2.translateZ(this.gamespeed);
 
       // this.camera.lookAt(this.player.position);
-
       this.renderer.render(this.scene, this.camera);
+      // this.bgrenderer.render(this.scene.background.backgroundScene,this.scene.background.backgroundCamera);
       this.tracker.update();
 
       document.getElementById('score').innerHTML = 'Score: ' + this.score;
@@ -201,8 +203,10 @@ export default class App {
       }
       // setup the render function to "autoloop"
       requestAnimationFrame(() => this.render());
-    }else{
+    }else if (this.gameOver){
       document.getElementById('score').innerHTML = 'YOU WIN!! GOOD JOB!! WE ARE PROUD OF YOU';
+    }else{
+      document.getElementById('score').innerHTML = 'Oh no you died! You obtained a final score of: ' + this.score;
     }
   }
 
@@ -223,7 +227,7 @@ export default class App {
     this.tracker.handleResize();
   }
 
-  extendframe(zpos) {
+  extendframe() {
     this.scene.remove(this.game);
     this.scene.remove(this.game2);
     this.game = this.game2;
@@ -239,8 +243,7 @@ export default class App {
   }
 
   detectCollision(obstacles) {
-    console.log(obstacles);
-    var raycaster = new THREE.Raycaster();
+    // console.log(obstacles);
     // console.log(this.player.vertices.length);
     for (let i = 0; i < this.player.vertices.length; ++i) {
       // console.log(this.player.vertices[i]);
@@ -248,18 +251,11 @@ export default class App {
       var globalVertex = localVertex.applyMatrix4(this.player.matrix);
       var directionVector = globalVertex.sub(this.player.position);
 
-      var angle = globalVertex.angleTo(directionVector);
-      console.log("angle: " + angle);
-      // var ray = new THREE.Raycaster(origin, directionVector.clone().normalize());
-      // var intersections = ray.intersectObjects(obstacles);
-      if (angle <= Math.PI / 2) {
-        raycaster.set(this.player.position, directionVector.clone().normalize());
-        var collisionResults = raycaster.intersectObjects({ objects: obstacles });
-
-        if (collisionResults.length > 0 && collisionResults[0].distance < directionVector.length()) {
-          console.log("BREAK IT MAN");
-          break;
-        }
+      var raycaster = new THREE.Raycaster(this.player.position, directionVector, 0, 40);
+      // raycaster.setFromCamera( this.player, this.camera ); 
+      var collisionResults = raycaster.intersectObjects(obstacles, true);
+      if (collisionResults.length > 0 && collisionResults[0].distance < directionVector.length()) {
+        return true;
       }
     }
     // return true;
