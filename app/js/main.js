@@ -10,24 +10,27 @@ import StarryBG from './models/StarryBG';
 export default class App {
   constructor() {
     const c = document.getElementById('mycanvas');
+    
+    var xConstraint = 45;
+    var yConstraint = 30;
 
-    //values to b e translated in eventlistener
-    this.goUp = 3;
-    this.goDown = -3;
-    this.goLeft = -3;
-    this.goRight = 3;
+    var movementSpeed = 2.5;
+    //values to be translated in eventlistener
+    this.goUp = movementSpeed;
+    this.goDown = -(movementSpeed);
+    this.goLeft = -(movementSpeed);
+    this.goRight = movementSpeed;
 
-    this.gamespeed = .5;
+    this.gamespeed = 1;
 
     this.gameOver = false;
 
     this.gamelist = [];
-    this.renderdistance = 125;
+    this.renderdistance = 220;
 
     this.score = 0;
     this.winCondition = 10000;
     this.frameCount = 0;
-
 
     // Enable antialias for smoother lines
     this.renderer = new THREE.WebGLRenderer({ canvas: c, antialias: true });
@@ -104,33 +107,46 @@ export default class App {
       }
       else if (e.keyCode == '38') {
         // up arrow
-        this.player.translateY(this.goUp);
+        // this.camera.translateY(this.goUp);
+        if(this.player.position.y < yConstraint){
+            this.player.translateY(this.goUp);
+        }
       }
       else if (e.keyCode == '40') {// down arrow
-        this.player.translateY(this.goDown);
+        // this.camera.translateY(this.goDown);
+        if(this.player.position.y > -yConstraint){
+            this.player.translateY(this.goDown);
+        }
       }
       else if (e.keyCode == '37') {
         // left arrow
-
-        this.player.translateX(this.goLeft);
-        
-        
+        //  this.camera.translateX(this.goLeft);
+        if(this.player.position.x > -xConstraint){
+            this.player.translateX(this.goLeft);
+        }
       }
       else if (e.keyCode == '39') {
         // right arrow
-        if (e.keyCode == '16'){
-          this.player.translateX(this.goRight*2);
-        }else{
-          this.player.translateX(this.goRight);
-        }
+        //  this.camera.translateX(this.goRight);
+            if(this.player.position.x < xConstraint){
+                this.player.translateX(this.goRight);
+            }
+      }
+        else if (e.keyCode == '65') {
+        // 'A' Key
+                this.player.rotateZ(this.goRight);
+      }
+        else if (e.keyCode == '68') {
+        // 'D' Key
+                this.player.rotateZ(this.goRight);
       }
       else if (e.keyCode == '27') { //press esc to pause
         if (this.isPaused) {
           this.isPaused = false;
-          this.goUp = 3;
-          this.goDown = -3;
-          this.goLeft = -3;
-          this.goRight = 3;
+          this.goUp = movementSpeed;
+          this.goDown = -(movementSpeed);
+          this.goLeft = -(movementSpeed);
+          this.goRight = (movementSpeed);
           this.gamespeed = .5;
         } else {
           this.goUp = 0;
@@ -219,9 +235,6 @@ export default class App {
 
     this.scene.add(this.game);
     this.scene.add(this.game2);
-    //this.game.translateZ(zpos);
-    // this.player.position.z = 100;
-    // this.camera.position.z = 150;
 
   }
 
@@ -253,26 +266,6 @@ export default class App {
     return false;
   }
 
-  setGameOver(val) {
-    this.gameOver = val;
-  }
 
-
-  //extedn the game board
-  // if (init){
-  //   for (let i = 0; i < 5; ++i){
-  //     this.gamelist.push( new GameScene(10, 3));
-  //     this.gamelist[this.scenecounter].position.z++;
-  //     this.gamelist[this.scenecounter].position.z = -zpos - i*125;
-  //     this.scene.add ( this.gamelist[this.scenecounter]); 
-  //     this.scenecounter = this.gamelist.length -1;
-  //   }
-  // }else{
-
-  //   console.log("POPPING");
-  //   this.gamelist.push( new GameScene(10, 3));
-  //   this.gamelist[this.scenecounter].position.z = -zpos;
-  //   this.scene.add ( this.gamelist[this.scenecounter]);
-  // }
 
 }

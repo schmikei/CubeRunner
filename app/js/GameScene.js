@@ -10,6 +10,7 @@ export default class GameScene extends Group {
     var maxY = 60;
     var maxZ = 50;
 
+    this.collidableMeshList = [];
     this.floor = new Plane(350, 250);
     this.floor.translateY(-40);
     this.floor.rotateX(Math.PI /2);
@@ -35,6 +36,7 @@ export default class GameScene extends Group {
             }
             this.box.translateZ(-(translationZ));
         }
+        this.collidableMeshList.push(this.box);
         this.add(this.box);
     }
 
@@ -81,5 +83,8 @@ export default class GameScene extends Group {
         particles = new THREE.Points( particleGeometry, pMaterial );
         scene.add( particles );
         particles.visible=false;
+    }
+    getList() {
+      return this.collidableMeshList;
     }
 } 
