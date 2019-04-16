@@ -5,9 +5,9 @@ import * as THREE from 'three';
 export default class Moon extends Group {
   constructor (radius, numVert) {
     super ();
-
+    console.log(process.cwd())
     const moonGeo = new CircleGeometry(radius, numVert, numVert);
-    var texture = new THREE.TextureLoader().load( "./app/js/models/moon.jpeg" );
+    var texture = new THREE.TextureLoader().load( "./images/moon.jpeg" );
     texture.wrapS = THREE.RepeatWrapping;
     texture.wrapT = THREE.RepeatWrapping;
 
