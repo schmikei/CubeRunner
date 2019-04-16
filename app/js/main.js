@@ -79,7 +79,7 @@ export default class App {
 
     this.offset = 50;
 
-    this.game = new GameScene(10, 3);
+    this.game = new GameScene(0, 0);
     this.game2 = new GameScene(10, 3);
     this.game2.translateZ(-125);
 
@@ -90,7 +90,10 @@ export default class App {
     this.scene.add(this.game2);
 
     this.obstacles = [];
-    this.obstacles.push(this.game.children);
+    this.obstacles.push(this.game.getList());
+
+    this.bonusRings = [];
+    this.bonusRings.push(this.game.getInnerRingList());
 
 
     this.scenecounter = 0;
@@ -179,7 +182,11 @@ export default class App {
         document.getElementById('score').innerHTML = 'Score: ' + this.score + " GAME OVER!!"
       }
 
-      // this.game.randomTransforms(10);
+      if (this.detectCollision(this.bonusRings[0])) {
+        this.score = this.score + 200;
+      }
+
+      //this.game.randomTransforms(10);
 
 
       this.game.translateZ(this.gamespeed);
@@ -235,7 +242,10 @@ export default class App {
     this.game2.translateZ(-125);
 
     this.obstacles.shift(0);
-    this.obstacles.push(this.game.children);
+    this.obstacles.push(this.game.getList());
+
+    this.bonusRings.shift(0);
+    this.bonusRings.push(this.game.getInnerRingList());
 
     this.scene.add(this.game);
     this.scene.add(this.game2);

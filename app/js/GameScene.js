@@ -1,16 +1,18 @@
 import { Group } from 'three';
 import Box from './models/Box';
 import Ring from './models/Ring';
+import InnerRing from './models/InnerRing';
 import Plane from './models/Plane';
 export default class GameScene extends Group {
     constructor(numBoxes, numRings) {
         super();
 
-        var maxX = 100;
-        var maxY = 60;
+        var maxX = 90;
+        var maxY = 50;
         var maxZ = 50;
 
         this.collidableMeshList = [];
+        this.collidableMeshList2 = [];
         this.floor = new Plane(350, 250);
         this.floor.translateY(-40);
         this.floor.rotateX(Math.PI / 2);
@@ -42,6 +44,7 @@ export default class GameScene extends Group {
 
         for (let j = 0; j < numRings; j++) {
             this.ring = new Ring(15, 1);
+            this.innerRing = new InnerRing(14);
             let ringX = Math.floor(Math.random() * maxX);
             let ringY = Math.floor(Math.random() * maxY);
             let ringZ = Math.floor(Math.random() * maxZ);
@@ -50,21 +53,34 @@ export default class GameScene extends Group {
                 this.ring.translateX(ringX);
                 this.ring.translateY(ringY);
                 this.ring.translateZ(ringZ);
+                
+                this.innerRing.translateX(ringX);
+                this.innerRing.translateY(ringY);
+                this.innerRing.translateZ(ringZ);
             }
             else {
                 this.ring.translateX(-(ringX));
+                this.innerRing.translateX(-(ringX));
                 if (ringY > 20) {
                     this.ring.translateY(-20);
+                    this.innerRing.translateY(-20);
                 }
                 else {
                     this.ring.translateY(-(ringY));
+                    this.innerRing.translateY(-(ringY));
                 }
                 this.ring.translateZ(-(ringZ));
+                this.innerRing.translateZ(-(ringZ));
             }
+            this.collidableMeshList.push(this.ring);
+            this.collidableMeshList2.push(this.innerRing);
+
             this.add(this.ring);
+            this.add(this.innerRing);
         }
         return this;
     }
+
     randomTransforms(intensity) {
         intensity = intensity%100;
         for (let i = 0; i < this.children.length; ++i) {
@@ -92,7 +108,12 @@ export default class GameScene extends Group {
         scene.add(particles);
         particles.visible = false;
     }
+
     getList() {
         return this.collidableMeshList;
+    }
+
+    getInnerRingList() {
+        return this.collidableMeshList2;
     }
 } 
