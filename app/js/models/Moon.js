@@ -1,21 +1,23 @@
-import { SphereGeometry, MeshPhongMaterial, Mesh, Group} from 'three';
+import { SphereGeometry, MeshPhongMaterial, Mesh, Group, SphereBufferGeometry, BoxGeometry, CircleGeometry} from 'three';
 import * as THREE from 'three';
 
 
 export default class Moon extends Group {
-  constructor (radius) {
+  constructor (radius, numVert) {
     super ();
 
-    const moonGeo = new SphereGeometry(radius,100,100);
+    const moonGeo = new CircleGeometry(radius, numVert, numVert);
     var texture = new THREE.TextureLoader().load( "./app/js/models/moon.jpeg" );
     texture.wrapS = THREE.RepeatWrapping;
     texture.wrapT = THREE.RepeatWrapping;
 
-    const moonText = MeshPhongMaterial({ map: texture, overdraw: 0.5});
+
+    var tex = texture.clone();
+    tex.needsUpdate = true;
+    const moonText = new MeshPhongMaterial( {map: texture});
     const body = new Mesh( moonGeo, moonText );
     this.add(body);
 
-    // default to "return this;"
     return this;
   }
 } 

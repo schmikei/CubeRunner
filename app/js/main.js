@@ -79,8 +79,8 @@ export default class App {
 
     this.offset = 50;
 
-    this.game = new GameScene(0, 0);
-    this.game2 = new GameScene(10, 3);
+    this.game = new GameScene(0, 0, 0 );
+    this.game2 = new GameScene(10, 3, 2);
     this.game2.translateZ(-125);
 
     // this.game.matrixAutoUpdate = false;
@@ -238,7 +238,7 @@ export default class App {
     this.scene.remove(this.game);
     this.scene.remove(this.game2);
     this.game = this.game2;
-    this.game2 = new GameScene(10, 3);
+    this.game2 = new GameScene(10, 3, 3);
     this.game2.translateZ(-125);
 
     this.obstacles.shift(0);
@@ -246,7 +246,6 @@ export default class App {
 
     this.bonusRings.shift(0);
     this.bonusRings.push(this.game.getInnerRingList());
-
     this.scene.add(this.game);
     this.scene.add(this.game2);
 
@@ -256,12 +255,11 @@ export default class App {
     // console.log(obstacles);
     // console.log(this.player.vertices.length);
     for (let i = 0; i < this.player.vertices.length; ++i) {
-      // console.log(this.player.vertices[i]);
       var localVertex = this.player.vertices[i].clone();
       var globalVertex = localVertex.applyMatrix4(this.player.matrix);
       var directionVector = globalVertex.sub(this.player.position);
 
-      var raycaster = new THREE.Raycaster(this.player.position, directionVector, 0, 40);
+      var raycaster = new THREE.Raycaster(this.player.position, directionVector, 0, 0);
       var collisionResults = raycaster.intersectObjects(obstacles, true);
 
       if (collisionResults.length > 0 && collisionResults[0].distance < directionVector.length()) {

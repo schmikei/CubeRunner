@@ -5,7 +5,7 @@ import InnerRing from './models/InnerRing';
 import Plane from './models/Plane';
 import Moon from './models/Moon';
 export default class GameScene extends Group {
-    constructor(numBoxes, numRings) {
+    constructor(numBoxes, numRings, numMoons) {
         super();
 
         var maxX = 90;
@@ -19,9 +19,30 @@ export default class GameScene extends Group {
         this.floor.rotateX(Math.PI / 2);
         this.add(this.floor);
 
-        this.moon = new Moon(30);
-        this.moon.translateX(-20);
-        this.add(this.moon);
+
+        for (let i = 0; i < numMoons; i++) {
+            this.moon = new Moon(20,20);
+            let translationX = Math.floor(Math.random() * maxX);
+            let translationY = Math.floor(Math.random() * maxY);
+            let translationZ = Math.floor(Math.random() * maxZ);
+            if (i % 2 == 0) {
+                this.moon.translateX(translationX);
+                this.moon.translateY(translationY);
+                this.moon.translateZ(translationZ);
+            }
+            else {
+                this.moon.translateX(-(translationX));
+                if (translationY > 30) {
+                    this.moon.translateY(-30);
+                }
+                else {
+                    this.moon.translateY(-(translationY));
+                }
+                this.moon.translateZ(-(translationZ));
+            }
+            this.collidableMeshList.push(this.moon);
+            this.add(this.moon);
+        }
 
 
         for (let i = 0; i < numBoxes; i++) {
@@ -84,13 +105,10 @@ export default class GameScene extends Group {
             this.add(this.ring);
             this.add(this.innerRing);
         }
+        
         return this;
     }
-<<<<<<< HEAD
     //for hard mode
-=======
-
->>>>>>> 69d913a014f17ad9fc923de16893c84f5aa9a094
     randomTransforms(intensity) {
         intensity = intensity%100;
         for (let i = 1; i < this.children.length; ++i) {

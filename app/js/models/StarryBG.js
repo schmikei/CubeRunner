@@ -18,7 +18,6 @@ export default class StarryBG extends Group{
         backgroundMesh.material.depthWrite = false;
 
         this.backgroundScene = new THREE.Scene();
-        console.log(this.backgroundScene)
         this.backgroundCamera = new THREE.Camera();
         this.backgroundScene.add(this.backgroundCamera );
         this.backgroundScene.add(backgroundMesh);
