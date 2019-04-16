@@ -90,7 +90,10 @@ export default class App {
     this.scene.add(this.game2);
 
     this.obstacles = [];
-    this.obstacles.push(this.game.children);
+    this.obstacles.push(this.game.getList());
+
+    this.bonusRings = [];
+    this.bonusRings.push(this.game.getInnerRingList());
 
 
     this.scenecounter = 0;
@@ -179,12 +182,13 @@ export default class App {
         document.getElementById('score').innerHTML = 'Score: ' + this.score + " GAME OVER!!"
       }
 
-      // var hardMode = document.getElementById('hardMode');
-      // if (isHard == 'On'){
-        this.game.randomTransforms(this.frameCount);
-        this.game2.randomTransforms(this.frameCount);
-      // }
-      
+      if (this.detectCollision(this.bonusRings[0])) {
+        this.score = this.score + 200;
+      }
+
+      //this.game.randomTransforms(10);
+
+
       this.game.translateZ(this.gamespeed);
       this.game2.translateZ(this.gamespeed);
 
@@ -238,7 +242,10 @@ export default class App {
     this.game2.translateZ(-125);
 
     this.obstacles.shift(0);
-    this.obstacles.push(this.game.children);
+    this.obstacles.push(this.game.getList());
+
+    this.bonusRings.shift(0);
+    this.bonusRings.push(this.game.getInnerRingList());
 
     this.scene.add(this.game);
     this.scene.add(this.game2);
