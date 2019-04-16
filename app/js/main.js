@@ -79,7 +79,7 @@ export default class App {
 
     this.offset = 50;
 
-    this.game = new GameScene(10, 3);
+    this.game = new GameScene(0, 0);
     this.game2 = new GameScene(10, 3);
     this.game2.translateZ(-125);
 
@@ -179,15 +179,17 @@ export default class App {
         document.getElementById('score').innerHTML = 'Score: ' + this.score + " GAME OVER!!"
       }
 
-      // this.game.randomTransforms(10);
-
-
+      // var hardMode = document.getElementById('hardMode');
+      // if (isHard == 'On'){
+        this.game.randomTransforms(this.frameCount);
+        this.game2.randomTransforms(this.frameCount);
+      // }
+      
       this.game.translateZ(this.gamespeed);
       this.game2.translateZ(this.gamespeed);
 
       // this.camera.lookAt(this.player.position);
       this.renderer.render(this.scene, this.camera);
-      // this.bgrenderer.render(this.scene.background.backgroundScene,this.scene.background.backgroundCamera);
       this.tracker.update();
 
       document.getElementById('score').innerHTML = 'Score: ' + this.score;
@@ -197,8 +199,9 @@ export default class App {
       if (this.frameCount % 20 == 0 && !this.isPaused) {
         this.score += 1;
       }
+
       this.frameCount += 1;
-      if (this.score == this.winCondition){
+      if (this.score >= this.winCondition){
         this.gameOver = true;
       }
       // setup the render function to "autoloop"
@@ -252,8 +255,8 @@ export default class App {
       var directionVector = globalVertex.sub(this.player.position);
 
       var raycaster = new THREE.Raycaster(this.player.position, directionVector, 0, 40);
-      // raycaster.setFromCamera( this.player, this.camera ); 
       var collisionResults = raycaster.intersectObjects(obstacles, true);
+
       if (collisionResults.length > 0 && collisionResults[0].distance < directionVector.length()) {
         return true;
       }

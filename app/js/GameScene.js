@@ -2,6 +2,7 @@ import { Group } from 'three';
 import Box from './models/Box';
 import Ring from './models/Ring';
 import Plane from './models/Plane';
+import Moon from './models/Moon';
 export default class GameScene extends Group {
     constructor(numBoxes, numRings) {
         super();
@@ -15,6 +16,11 @@ export default class GameScene extends Group {
         this.floor.translateY(-40);
         this.floor.rotateX(Math.PI / 2);
         this.add(this.floor);
+
+        this.moon = new Moon(30);
+        this.moon.translateX(-20);
+        this.add(this.moon);
+
 
         for (let i = 0; i < numBoxes; i++) {
             this.box = new Box(20);
@@ -65,13 +71,18 @@ export default class GameScene extends Group {
         }
         return this;
     }
+    //for hard mode
     randomTransforms(intensity) {
         intensity = intensity%100;
-        for (let i = 0; i < this.children.length; ++i) {
+        for (let i = 1; i < this.children.length; ++i) {
             let chance = Math.random()*100;
-            if (chance < intensity){
-                this.children[i].translateX(1);
+            if (intensity%100 > 50){
+                this.children[i].translateX(.5);
+            }else{
+                this.children[i].translateX(-.5);
+
             }
+
         }
     }
     updateScene() {
