@@ -38,7 +38,7 @@ export default class App {
   
     this.scene = new THREE.Scene();
     // this.scene.background = new THREE.Color(0xf0f0f0);
-    var texture = new THREE.TextureLoader().load( "./app/js/models/star.jpg" );
+    var texture = new THREE.TextureLoader().load( "./images/star.jpg" );
     texture.wrapS = THREE.RepeatWrapping;
     texture.wrapT = THREE.RepeatWrapping;
     this.scene.background = texture;
