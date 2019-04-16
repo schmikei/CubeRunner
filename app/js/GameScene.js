@@ -21,7 +21,7 @@ export default class GameScene extends Group {
 
 
         for (let i = 0; i < numMoons; i++) {
-            this.moon = new Moon(20,20);
+            this.moon = new Moon(10,20);
             let translationX = Math.floor(Math.random() * maxX);
             let translationY = Math.floor(Math.random() * maxY);
             let translationZ = Math.floor(Math.random() * maxZ);

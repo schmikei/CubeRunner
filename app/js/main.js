@@ -98,7 +98,7 @@ export default class App {
 
     this.scenecounter = 0;
 
-    this.player = new Ship(2, 4, 6);
+    this.player = new Ship(6, 2, 20);
     this.player.position.z = 50
     this.player.castShadow = true;
     this.scene.add(this.player)
