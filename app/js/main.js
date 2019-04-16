@@ -38,7 +38,7 @@ export default class App {
   
     this.scene = new THREE.Scene();
     // this.scene.background = new THREE.Color(0xf0f0f0);
-    var texture = new THREE.TextureLoader().load( "./images/star.jpg" );
+    var texture = new THREE.TextureLoader().load( "../images/star.jpg" );
     texture.wrapS = THREE.RepeatWrapping;
     texture.wrapT = THREE.RepeatWrapping;
     this.scene.background = texture;
@@ -238,7 +238,7 @@ export default class App {
     this.scene.remove(this.game);
     this.scene.remove(this.game2);
     this.game = this.game2;
-    this.game2 = new GameScene(10, 3, 3);
+    this.game2 = new GameScene(6, 3, 3);
     this.game2.translateZ(-125);
 
     this.obstacles.shift(0);
